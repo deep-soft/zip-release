@@ -40,7 +40,7 @@ then
   fi
 elif [ "$INPUT_TYPE" = "tar" ] || [ "$INPUT_TYPE" = "tar.gz" ] || [ "$INPUT_TYPE" = "tar.xz" ]
 then
-  EXCLUSIONS=''
+  EXCLUSIONS='--exclude=*.tar* '
   if [ -z "$INPUT_EXCLUSIONS" ]
   then
     for EXCLUSION in $INPUT_EXCLUSIONS
