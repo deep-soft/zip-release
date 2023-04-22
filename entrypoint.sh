@@ -51,7 +51,7 @@ then
   fi
   if [ "$INPUT_TYPE" == "tar.xz" ]
   then
-    tar $EXCLUSIONS cvf - $INPUT_FILENAME $INPUT_PATH $INPUT_CUSTOM | xz -9 > $INPUT_FILENAME.tar.xz || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
+    tar $EXCLUSIONS cv - $INPUT_PATH $INPUT_CUSTOM | xz -9 > $INPUT_FILENAME || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
   else
     tar $EXCLUSIONS -zcvf $INPUT_FILENAME $INPUT_PATH $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }    
   fi
