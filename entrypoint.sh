@@ -3,7 +3,7 @@
 # Create archive or exit if command fails
 set -eu
 
-printf "\n📦 Creating %s archive...\n" "$INPUT_TYPE"
+printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
 
 if [ "$INPUT_DIRECTORY" != "." ] 
 then
@@ -59,4 +59,4 @@ else
   printf "\n⛔ Invalid archiving tool.\n"; exit 1;
 fi
 
-printf "\n✔ Successfully created %s archive.\n" "$INPUT_TYPE"
+printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
