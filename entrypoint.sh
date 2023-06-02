@@ -60,3 +60,4 @@ else
 fi
 
 printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
+echo "ZIP_RELEASE_ARCHIVE=$INPUT_FILENAME" >> $GITHUB_ENV
