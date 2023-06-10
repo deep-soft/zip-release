@@ -15,18 +15,18 @@ then
   if [ "$RUNNER_OS" = "Windows" ]
   then
     EXCLUSIONS=''
-    if [ -n "$INPUT_EXCLUSIONS" ]
+    if [ -n "$INPUT_EXCLUSIONS" ] || [ -n "$INPUT_RECURSIVE_EXCLUSIONS" ]
     then
       for EXCLUSION in $INPUT_EXCLUSIONS
       do
         EXCLUSIONS+=" -x!"
-        EXCLUSIONS+=$EXCLUSION
+        EXCLUSIONS+="$EXCLUSION"
       done
 
       for EXCLUSION in $INPUT_RECURSIVE_EXCLUSIONS
       do
         EXCLUSIONS+=" -xr!"
-        EXCLUSIONS+=$EXCLUSION
+        EXCLUSIONS+="$EXCLUSION"
       done
     fi
     echo "CMD: 7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM"
@@ -47,7 +47,7 @@ then
     for EXCLUSION in $INPUT_EXCLUSIONS
     do
       EXCLUSIONS+=" --exclude="
-      EXCLUSIONS+=$EXCLUSION
+      EXCLUSIONS+="$EXCLUSION"
     done
   fi
   if [ "$INPUT_TYPE" == "tar.xz" ]
