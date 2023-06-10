@@ -15,7 +15,7 @@ then
   if [ "$RUNNER_OS" = "Windows" ]
   then
     EXCLUSIONS=''
-    if [ -z "$INPUT_EXCLUSIONS" ]
+    if [ -n "$INPUT_EXCLUSIONS" ]
     then
       for EXCLUSION in $INPUT_EXCLUSIONS
       do
@@ -33,7 +33,7 @@ then
     7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
   else
     EXCLUSIONS=""
-    if [ -z "$INPUT_EXCLUSIONS" ]
+    if [ -n "$INPUT_EXCLUSIONS" ]
     then
       EXCLUSIONS="-x $INPUT_EXCLUSIONS"
     fi
@@ -42,7 +42,7 @@ then
 elif [ "$INPUT_TYPE" = "tar" ] || [ "$INPUT_TYPE" = "tar.gz" ] || [ "$INPUT_TYPE" = "tar.xz" ]
 then
   EXCLUSIONS='--exclude=*.tar* '
-  if [ -z "$INPUT_EXCLUSIONS" ]
+  if [ -n "$INPUT_EXCLUSIONS" ]
   then
     for EXCLUSION in $INPUT_EXCLUSIONS
     do
