@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Create archive or exit if command fails
-set -eu
+set -eux
 
 printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
 
@@ -16,7 +16,7 @@ then
   then
     EXCLUSIONS=''
     if [ -n "$INPUT_EXCLUSIONS" ] || [ -n "$INPUT_RECURSIVE_EXCLUSIONS" ]
-    then
+    then 
       for EXCLUSION in $INPUT_EXCLUSIONS
       do
         EXCLUSIONS+=" -x!"
