@@ -29,6 +29,7 @@ then
         EXCLUSIONS+=$EXCLUSION
       done
     fi
+    echo "CMD: 7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM"
     7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
   else
     EXCLUSIONS=""
