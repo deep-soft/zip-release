@@ -1,7 +1,11 @@
 #! /bin/bash
 
 # Create archive or exit if command fails
-set -eufx
+set -euf
+if [ "$DEBUG_MODE" = "yes" ]
+then
+  set -x
+fi
 
 printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
 
