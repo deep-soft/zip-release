@@ -45,5 +45,6 @@ runs:
         INPUT_RECURSIVE_EXCLUSIONS: ${{ inputs.recursive_exclusions }}
         INPUT_CUSTOM: ${{ inputs.custom }}
         INPUT_TYPE: ${{ inputs.type }}
+        MSYS_NO_PATHCONV: true
       run: $GITHUB_ACTION_PATH/entrypoint.sh
 
