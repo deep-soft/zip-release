@@ -33,6 +33,10 @@ inputs:
     description: 'Tool to use for archiving'
     default: 'zip'
     required: false
+  debug:
+    description: 'Set debug mode (yes/no)'
+    default: 'no'
+    required: false
 runs:
   using: composite
   steps:
@@ -45,6 +49,7 @@ runs:
         INPUT_RECURSIVE_EXCLUSIONS: ${{ inputs.recursive_exclusions }}
         INPUT_CUSTOM: ${{ inputs.custom }}
         INPUT_TYPE: ${{ inputs.type }}
+        DEBUG_MODE: ${{ inputs.debug }}
         MSYS_NO_PATHCONV: true
       run: $GITHUB_ACTION_PATH/entrypoint.sh
 
