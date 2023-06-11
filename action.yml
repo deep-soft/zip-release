@@ -46,5 +46,7 @@ runs:
         INPUT_CUSTOM: ${{ inputs.custom }}
         INPUT_TYPE: ${{ inputs.type }}
         MSYS_NO_PATHCONV: true
-      run: $GITHUB_ACTION_PATH/entrypoint.sh
+      run: |
+        set -o noglob;
+        $GITHUB_ACTION_PATH/entrypoint.sh;
 
