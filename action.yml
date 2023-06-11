@@ -48,5 +48,6 @@ runs:
         MSYS_NO_PATHCONV: true
       run: |
         set -o noglob;
+        set -f;
         $GITHUB_ACTION_PATH/entrypoint.sh;
 
