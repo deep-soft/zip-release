@@ -14,6 +14,8 @@ then
   cd $INPUT_DIRECTORY
 fi
 
+ARCHIVE_SIZE=""
+
 if [ "$INPUT_TYPE" = "zip" ]
 then
   if [ "$RUNNER_OS" = "Windows" ]
@@ -35,6 +37,7 @@ then
     fi
     echo "CMD: 7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM"
     7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
+    ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)')
   else
     EXCLUSIONS=""
     if [ -n "$INPUT_EXCLUSIONS" ]
@@ -42,6 +45,7 @@ then
       EXCLUSIONS="-x $INPUT_EXCLUSIONS"
     fi
     zip -r $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
+    ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)')
   fi
 elif [ "$INPUT_TYPE" = "tar" ] || [ "$INPUT_TYPE" = "tar.gz" ] || [ "$INPUT_TYPE" = "tar.xz" ]
 then
@@ -60,9 +64,10 @@ then
   else
     tar $EXCLUSIONS -zcvf $INPUT_FILENAME $INPUT_PATH $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }    
   fi
+  ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)')
 else
   printf "\n⛔ Invalid archiving tool.\n"; exit 1;
 fi
 
-printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
-echo "ZIP_RELEASE_ARCHIVE=$INPUT_FILENAME" >> $GITHUB_ENV
+printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS"
+echo "ZIP_RELEASE_ARCHIVE=$INPUT_DIRECTORY/$INPUT_FILENAME" >> $GITHUB_ENV
