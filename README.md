@@ -53,9 +53,9 @@ The path to the files or directory that should be archived, relative to `directo
 ### `type`
 Default: `zip`
 
-Either `zip` or `tar`.
+Either `zip` or `7z` or `tar` or `tar.gz` or `tar.xz`
 
-Defines if either a ZIP-file is created, or a tar archive (the latter gzipped).
+Defines if either a zip file, 7z or tar file is created; tar archive compressed with gzip or xz.
 
 On Windows platform 7zip is used to zip files as zip command is not available there.
 
@@ -86,7 +86,7 @@ For example:
 Default: ZIP_RELEASE_ARCHIVE
 
 env variable name to set after archive creation
-    
+
 ### `custom`
 Default: none
 
