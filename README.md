@@ -82,6 +82,11 @@ For example:
 
 ```recursive_exclusions: *.txt``` will exclude files ending with `.txt` in any subdirectory.
 
+### `env_variable`
+Default: ZIP_RELEASE_ARCHIVE
+
+env variable name to set after archive creation
+    
 ### `custom`
 Default: none
 
