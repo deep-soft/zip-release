@@ -30,7 +30,7 @@ inputs:
     default: ''
     required: false
   type:
-    description: 'Archive type (zip/7z/tar/tar.gz/tar.xz)'
+    description: 'Archive type (zip / 7z / tar / tar.gz / tar.xz)'
     default: 'zip'
     required: false
   env_variable:
