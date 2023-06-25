@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Archive Release
-      uses: thedoctor0/zip-release@0.7.1
+      uses: deep-soft/zip-release@v2
       with:
         type: 'zip'
         filename: 'release.zip'
