@@ -16,7 +16,7 @@ fi
 
 ARCHIVE_SIZE=""
 
-if [ "$INPUT_TYPE" = "zip" ]
+if [ "$INPUT_TYPE" = "zip" ] || [ "$INPUT_TYPE" = "7z" ]
 then
   if [ "$RUNNER_OS" = "Windows" ]
   then
@@ -35,8 +35,8 @@ then
         EXCLUSIONS+="$EXCLUSION"
       done
     fi
-    echo "CMD: 7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM"
-    7z a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
+    echo "CMD: $INPUT_TYPE a -tzip $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM"
+    7z a -t$INPUT_TYPE $INPUT_FILENAME $INPUT_PATH $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)')
   else
     EXCLUSIONS=""
