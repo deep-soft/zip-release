@@ -17,6 +17,10 @@ inputs:
     description: 'Working directory before zipping'
     default: '.'
     required: false
+  inclusions:
+    description: 'List of included files / directories'
+    default: ''
+    required: false
   exclusions:
     description: 'List of excluded files / directories'
     default: ''
@@ -49,6 +53,7 @@ runs:
         INPUT_FILENAME: ${{ inputs.filename }}
         INPUT_PATH: ${{ inputs.path }}
         INPUT_DIRECTORY: ${{ inputs.directory }}
+        INPUT_INCLUSIONS: ${{ inputs.inclusions }}
         INPUT_EXCLUSIONS: ${{ inputs.exclusions }}
         INPUT_RECURSIVE_EXCLUSIONS: ${{ inputs.recursive_exclusions }}
         INPUT_CUSTOM: ${{ inputs.custom }}
