@@ -8,7 +8,7 @@ then
 fi
 
 # change path separator to /
-INPUT_DIRECTORY=$(echo $INPUT_DIRECTORY | tr \\ /)
+INPUT_DIRECTORY=$(echo $INPUT_DIRECTORY | tr '\\' /)
 
 printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
 
