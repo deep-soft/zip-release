@@ -38,7 +38,7 @@ then
         EXCLUSIONS+="$EXCLUSION"
       done
     fi
-    echo "CMD: $INPUT_TYPE a -tzip $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM"
+    echo "CMD: 7z a -t$INPUT_TYPE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM"
     7z a -t$INPUT_TYPE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)')
   else
