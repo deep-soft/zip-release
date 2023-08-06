@@ -14,9 +14,10 @@ printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s
 if [ "$INPUT_DIRECTORY" != "." ] 
 then
   cd $INPUT_DIRECTORY
-  pwd
-  ls -l
 fi
+
+pwd
+ls -l
 
 ARCHIVE_SIZE=""
 INCLUSIONS="$INPUT_INCLUSIONS"
