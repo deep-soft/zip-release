@@ -14,6 +14,11 @@ printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s
 if [ "$INPUT_DIRECTORY" != "." ] 
 then
   cd $INPUT_DIRECTORY
+  if [ "$DEBUG_MODE" = "yes" ]
+  then
+    echo "List dir:"
+    ls -l
+  fi
 fi
 
 ARCHIVE_SIZE=""
