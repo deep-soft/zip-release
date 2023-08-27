@@ -1,0 +1,18 @@
+name: test download
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        shell: bash
+        run: |
+          7zname = $(cat bin/bin-lin.txt)
+          echo $7zname
+          curl refs/tags/bins/$7zname -o $7zname
+          ls -l
+      
+
+    
