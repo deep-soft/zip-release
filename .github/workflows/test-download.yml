@@ -12,10 +12,10 @@ jobs:
       - name: test
         shell: bash
         run: |
-          7zname=$(cat bin/bin-lin.txt)
-          echo $7zname
-          #curl refs/tags/bins/$7zname -o $7zname
-          curl -o $7zname https://github.com/deep-soft/zip-release/releases/download/bins/$7zname
+          name_7z=$(cat bin/bin-lin.txt);
+          echo $name_7z;
+          #curl refs/tags/bins/$name_7z -o $name_7z;
+          curl -o $name_7z https://github.com/deep-soft/zip-release/releases/download/bins/$name_7z;
           ls -l
       
 
