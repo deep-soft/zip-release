@@ -16,10 +16,13 @@ then
   cd $INPUT_DIRECTORY
   if [ "$DEBUG_MODE" = "yes" ]
   then
-    echo "List dir:"
-    ls -l
+    echo "List dir:";
+    ls -l;
   fi
 fi
+
+echo "List dir:";
+ls -l;
 
 ARCHIVE_SIZE=""
 INCLUSIONS="$INPUT_INCLUSIONS"
