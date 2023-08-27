@@ -48,6 +48,7 @@ then
     then
       EXCLUSIONS="-x $INPUT_EXCLUSIONS"
     fi
+    echo "CMD: zip -r $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM"
     zip -r $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  }
     echo 'Done'
     if [ "$RUNNER_OS" != "macOS" ]
