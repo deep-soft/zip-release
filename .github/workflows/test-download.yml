@@ -12,7 +12,7 @@ jobs:
       - name: test
         shell: bash
         run: |
-          7zname = $(cat bin/bin-lin.txt)
+          7zname=$(cat bin/bin-lin.txt)
           echo $7zname
           #curl refs/tags/bins/$7zname -o $7zname
           curl -o $7zname https://github.com/deep-soft/zip-release/releases/download/bins/$7zname
