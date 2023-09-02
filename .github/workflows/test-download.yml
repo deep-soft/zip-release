@@ -4,7 +4,7 @@ on:
 
 jobs:
   test_download:
-    name: ${{ matrix.job.cfg }}
+    name: test_download-${{ matrix.job.cfg }}
     runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
@@ -41,7 +41,7 @@ jobs:
           echo "name_7z_full: ${{ env.name_7z_full }}"
 
   test_zip:
-    name: ${{ matrix.job.cfg }}
+    name: test_zip-${{ matrix.job.cfg }}
     runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
@@ -51,6 +51,9 @@ jobs:
           - { cfg: win, os: windows-latest }
           - { cfg: mac, os: macos-latest   }
     steps:
+      - name: checkout
+        uses: deep-soft/checkout@v3
+
       - uses: deep-soft/zip-release@main
         with:
           type: "zip"
