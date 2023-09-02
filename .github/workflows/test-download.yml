@@ -57,13 +57,13 @@ jobs:
           filename: 'tst-zip-${{ matrix.job.cfg }}.zip'
 
       - name: test unpack
-        if: (${{ matrix.job.cfg == 'lin' || ${{ matrix.job.cfg == 'mac' }})
+        if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
         shell: bash
         run: |
           unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }}
 
       - name: test unpack
-        if: (${{ matrix.job.cfg == 'win' }})
+        if: ${{ matrix.job.cfg == 'win' }}
         shell: bash
         run: |
           7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
