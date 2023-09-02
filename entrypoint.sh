@@ -7,6 +7,10 @@ then
   set -x
 fi
 
+StartTime="$(date -u +%s)"
+CrtDate=$(date "+%F^%H:%M:%S")
+echo "Start: " $CrtDate
+
 # change path separator to /
 INPUT_DIRECTORY=$(echo $INPUT_DIRECTORY | tr '\\' /)
 printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
@@ -86,5 +90,12 @@ else
   printf "\n⛔ Invalid archiving tool.\n"; exit 1;
 fi
 
-printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS"
+FinishTime="$(date -u +%s)"
+CrtDate=$(date "+%F^%H:%M:%S")
+echo "Finish: " $CrtDate
+
+ElapsedTime=$(( FinishTime - StartTime ))
+echo "Elapsed: $ElapsedTime"
+
+printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%s]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime"
 echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_DIRECTORY/$INPUT_FILENAME" >> $GITHUB_ENV
