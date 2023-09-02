@@ -23,7 +23,13 @@ jobs:
           name_7z=$(cat bin/bin-${{ matrix.job.cfg }}.txt);
           echo $name_7z;
           #curl refs/tags/bins/$name_7z -o $name_7z;
+          mkdir tmp
+          pushd tmp
           curl -o $name_7z https://github.com/deep-soft/zip-release/releases/download/bins/$name_7z;
+          echo "list: pushd"
+          ls -l
+          popd
+          echo "list: popd"
           ls -l
       
 
