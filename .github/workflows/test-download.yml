@@ -26,8 +26,9 @@ jobs:
           mkdir tmp
           pushd tmp
           curl -o $name_7z https://github.com/deep-soft/zip-release/releases/download/bins/$name_7z;
-          name_7z_full=$(find . -type f -name $name_7z -print0 | xargs -0 realpath)
-          echo "name_7z_full=$name_7z_full" >> GITHUB_ENV
+          # name_7z_full=$(find . -type f -name $name_7z -print0 | xargs -0 realpath)
+          name_7z_full=$(find . -name "$name_7z" | xargs readlink -f)
+          echo "name_7z_full=$name_7z_full" >> $GITHUB_ENV
           echo "list: pushd"
           ls -l
           popd
