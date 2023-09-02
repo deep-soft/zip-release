@@ -17,7 +17,7 @@ jobs:
       - name: checkout
         uses: deep-soft/checkout@v3
 
-      - name: test
+      - name: test download
         shell: bash
         run: |
           name_7z=$(cat bin/bin-${{ matrix.job.cfg }}.txt);
@@ -26,11 +26,15 @@ jobs:
           mkdir tmp
           pushd tmp
           curl -o $name_7z https://github.com/deep-soft/zip-release/releases/download/bins/$name_7z;
+          name_7z_full=$(find . -type f -name $name_7z -print0 | xargs -0 realpath)
+          echo "name_7z_full=$name_7z_full" >> GITHUB_ENV
           echo "list: pushd"
           ls -l
           popd
           echo "list: popd"
           ls -l
       
-
-    
+      - name: test unpack
+        shell: bash
+        run: |
+          echo "name_7z_full: ${{ env.name_7z_full }}"
