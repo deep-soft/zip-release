@@ -97,5 +97,5 @@ echo "Finish: " $CrtDate
 ElapsedTime=$(( FinishTime - StartTime ))
 echo "Elapsed: $ElapsedTime"
 
-printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%s]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime"
+printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime"
 echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_DIRECTORY/$INPUT_FILENAME" >> $GITHUB_ENV
