@@ -4,7 +4,15 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.job.cfg }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { cfg: lin, os: ubuntu-latest  }
+          - { cfg: win, os: windows-latest }
+          - { cfg: mac, os: macos-latest   }
     steps:
       - name: checkout
         uses: deep-soft/checkout@v3
@@ -12,7 +20,7 @@ jobs:
       - name: test
         shell: bash
         run: |
-          name_7z=$(cat bin/bin-lin.txt);
+          name_7z=$(cat bin/bin-${{ matrix.job.cfg }}.txt);
           echo $name_7z;
           #curl refs/tags/bins/$name_7z -o $name_7z;
           curl -o $name_7z https://github.com/deep-soft/zip-release/releases/download/bins/$name_7z;
