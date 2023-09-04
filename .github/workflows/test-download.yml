@@ -39,6 +39,7 @@ jobs:
         shell: bash
         run: |
           echo "name_7z_full: ${{ env.name_7z_full }}"
+          xz -vt "${{ env.name_7z_full }}"
 
   test_zip:
     name: test_zip-${{ matrix.job.cfg }}
