@@ -20,12 +20,13 @@ jobs:
       - name: test download
         shell: bash
         run: |
+          name_common=$(cat bin/bin-common.txt);
           name_7z=$(cat bin/bin-${{ matrix.job.cfg }}.txt);
           echo $name_7z;
           #curl refs/tags/bins/$name_7z -o $name_7z;
           mkdir tmp
           pushd tmp
-          curl -o $name_7z https://github.com/deep-soft/zip-release/releases/download/bins/$name_7z;
+          curl -o $name_7z $name_common$name_7z;
           # name_7z_full=$(find . -type f -name $name_7z -print0 | xargs -0 realpath)
           name_7z_full=$(find . -name "$name_7z" | xargs readlink -f)
           echo "name_7z_full=$name_7z_full" >> $GITHUB_ENV
