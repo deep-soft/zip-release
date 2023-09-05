@@ -58,7 +58,7 @@ jobs:
         if: ${{ matrix.job.cfg == 'win' }}
         uses: deep-soft/upload-artifact@v3
         with:
-          name: ${{ env.name_xz_full }}
+          name: xz
           path: ${{ env.name_xz_full }}
 
   test_zip:
