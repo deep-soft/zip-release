@@ -43,7 +43,18 @@ jobs:
         run: |
           echo "name_7z_full: ${{ env.name_7z_full }}"
           file "${{ env.name_7z_full }}"
-          xz -vt "${{ env.name_7z_full }}"
+          if [ "${{ matrix.job.cfg }}" == "win" ]; then
+            xz -9 ${{ env.name_7z_full }}
+          else
+            xz -vt "${{ env.name_7z_full }}"
+          fi
+
+      - name: Upload Artifact
+        if: ${{ matrix.job.cfg == 'win' }}
+        uses: deep-soft/upload-artifact@v3
+        with:
+          name: ${{ env.name_7z_full }}.tar.xz
+          path: "*.tar.xz"
 
   test_zip:
     name: test_zip-${{ matrix.job.cfg }}
