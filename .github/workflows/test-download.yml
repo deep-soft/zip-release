@@ -46,8 +46,8 @@ jobs:
           file "${{ env.name_7z_full }}"
           if [ "${{ matrix.job.cfg }}" == "win" ]; then
             xz -9 ${{ env.name_7z_full }}
-            ls -l
             name_xz_full=$(find . -name "*.xz" | xargs readlink -f)
+            ls -l $name_xz_full
             echo "name_xz_full=$name_xz_full" >> $GITHUB_ENV            
           else
             xz -vt "${{ env.name_7z_full }}"
@@ -59,7 +59,9 @@ jobs:
         uses: deep-soft/upload-artifact@v3
         with:
           name: xz
-          path: ${{ env.name_xz_full }}
+          path: |
+            ${{ env.name_xz_full }}
+            tmp
 
   test_zip:
     name: test_zip-${{ matrix.job.cfg }}
