@@ -2,8 +2,7 @@
 
 # Create archive or exit if command fails
 set -euf
-if [ "$DEBUG_MODE" = "yes" ]
-then
+if [[ "$DEBUG_MODE" == "yes" ]]; then
   set -x;
 fi
 
@@ -14,15 +13,13 @@ echo "Start: " $CrtDate;
 # change path separator to /
 INPUT_DIRECTORY=$(echo $INPUT_DIRECTORY | tr '\\' /);
 # change extension
-INPUT_FILENAME="${0%.*}".$INPUT_TYPE;
+INPUT_FILENAME="${INPUT_FILENAME%.*}".$INPUT_TYPE;
 
 printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
 
-if [ "$INPUT_DIRECTORY" != "." ] 
-then
+if [[ "$INPUT_DIRECTORY" != "." ]]; then
   cd $INPUT_DIRECTORY;
-  if [ "$DEBUG_MODE" = "yes" ]
-  then
+  if [[ "$DEBUG_MODE" == "yes" ]]; then
     echo "List dir:";
     ls -l;
   fi
@@ -34,13 +31,10 @@ ls -l;
 ARCHIVE_SIZE="";
 INCLUSIONS="$INPUT_INCLUSIONS";
 
-if [ "$INPUT_TYPE" = "zip" ] || [ "$INPUT_TYPE" = "7z" ]
-then
-  if [ "$RUNNER_OS" = "Windows" ]
-  then
+if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
+  if [[ "$RUNNER_OS" == "Windows" ]]; then
     EXCLUSIONS='';
-    if [ -n "$INPUT_EXCLUSIONS" ] || [ -n "$INPUT_RECURSIVE_EXCLUSIONS" ]
-    then 
+    if [[ -n "$INPUT_EXCLUSIONS" ]] || [[ -n "$INPUT_RECURSIVE_EXCLUSIONS" ]]; then
       for EXCLUSION in $INPUT_EXCLUSIONS
       do
         EXCLUSIONS+=" -x!";
@@ -59,31 +53,26 @@ then
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
   else
     EXCLUSIONS="";
-    if [ -n "$INPUT_EXCLUSIONS" ]
-    then
+    if [[ -n "$INPUT_EXCLUSIONS" ]]; then
       EXCLUSIONS="-x $INPUT_EXCLUSIONS";
     fi
     echo "CMD: zip -r $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM";
     zip -r $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
-    if [ "$RUNNER_OS" != "macOS" ]
-    then
+    if [[ "$RUNNER_OS" != "macOS" ]]; then
       ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
     fi
   fi
-elif [ "$INPUT_TYPE" = "tar" ] || [ "$INPUT_TYPE" = "tar.gz" ] || [ "$INPUT_TYPE" = "tar.xz" ]
-then
+elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INPUT_TYPE" == "tar.xz" ]]; then
   EXCLUSIONS='--exclude=*.tar* ';
-  if [ -n "$INPUT_EXCLUSIONS" ]
-  then
+  if [[ -n "$INPUT_EXCLUSIONS" ]]; then
     for EXCLUSION in $INPUT_EXCLUSIONS
     do
       EXCLUSIONS+=" --exclude=";
       EXCLUSIONS+="$EXCLUSION";
     done
   fi
-  if [ "$INPUT_TYPE" == "tar.xz" ]
-  then
+  if [[ "$INPUT_TYPE" == "tar.xz" ]]; then
     tar $EXCLUSIONS -cv $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM | xz -9 > $INPUT_FILENAME || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
   else
     tar $EXCLUSIONS -zcvf $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
