@@ -64,8 +64,8 @@ jobs:
 #            ${{ env.name_xz_full }}
 #            tmp
 
-  test_zip:
-    name: test_zip-${{ matrix.job.cfg }}
+  test_arc:
+    name: test_zip-${{ matrix.job.cfg }}-${{ matrix.job.type }}
     runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
