@@ -71,23 +71,30 @@ jobs:
       fail-fast: false
       matrix:
         job:
-          - { cfg: lin, os: ubuntu-latest  }
-          - { cfg: win, os: windows-latest }
-          - { cfg: mac, os: macos-latest   }
+          - { cfg: lin, type: 'zip'   , os: ubuntu-latest  }
+          - { cfg: win, type: 'zip'   , os: windows-latest }
+          - { cfg: mac, type: 'zip'   , os: macos-latest   }
+          - { cfg: lin, type: 'tar.xz', os: ubuntu-latest  }
+          - { cfg: win, type: 'tar.xz', os: windows-latest }
+          - { cfg: mac, type: 'tar.xz', os: macos-latest   }
     steps:
       - name: checkout
         uses: deep-soft/checkout@v3
 
       - uses: deep-soft/zip-release@main
         with:
-          type: "zip"
-          filename: 'tst-zip-${{ matrix.job.cfg }}.zip'
+          type: "${{ matrix.job.type }}"
+          filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}'
 
       - name: test lin / mac
         if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
         shell: bash
         run: |
-          unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }}
+          if [[ ${{ matrix.job.type }} == 'zip' ]]; then
+            unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }}
+          else
+            xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }}
+          fi
 
       - name: test win
         if: ${{ matrix.job.cfg == 'win' }}
