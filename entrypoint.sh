@@ -81,7 +81,9 @@ elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INP
   else
     tar $EXCLUSIONS -zcvf $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
   fi
-  ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
+  if [[ "$RUNNER_OS" != "macOS" ]]; then
+    ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
+  fi
 else
   printf "\n⛔ Invalid archiving tool.\n"; exit 1;
 fi
