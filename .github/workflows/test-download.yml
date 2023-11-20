@@ -84,7 +84,7 @@ jobs:
       - uses: deep-soft/zip-release@main
         with:
           type: "${{ matrix.job.type }}"
-          filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}'
+          filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
 
       - name: test lin / mac
         if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
