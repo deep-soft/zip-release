@@ -19,6 +19,10 @@ INPUT_DIRECTORY=$(echo $INPUT_DIRECTORY | tr '\\' /);
 # add extension
 INPUT_FILENAME="$INPUT_FILENAME.$INPUT_TYPE";
 
+# remove double extension
+INPUT_FILENAME=$(echo "$INPUT_FILENAME" | sed "s/.$INPUT_TYPE.$INPUT_TYPE/.$INPUT_TYPE/");
+echo "NFN:[$INPUT_FILENAME]"
+
 printf "\n📦 Creating archive=[%s], dir=[%s], name=[%s], path=[%s], runner=[%s] ...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$RUNNER_OS"
 
 if [[ "$INPUT_DIRECTORY" != "." ]]; then
