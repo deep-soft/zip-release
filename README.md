@@ -19,6 +19,7 @@ jobs:
         type: 'zip'
         filename: 'release.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig'
+        verbose: 'yes'
 ```
 
 The generated archive will be placed as specified by `directory`, `path` and `filename`.
@@ -86,6 +87,12 @@ For example:
 Default: ZIP_RELEASE_ARCHIVE
 
 env variable name to set after archive creation
+
+### `verbose`
+Default: no
+
+set to no for quiet operations
+set to yes to show output of filenames added to archive
 
 ### `custom`
 Default: none
