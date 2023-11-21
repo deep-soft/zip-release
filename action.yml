@@ -41,6 +41,10 @@ inputs:
     description: 'env variable name to set'
     default: 'ZIP_RELEASE_ARCHIVE'
     required: false
+  verbose:
+    description: 'Set verbose (yes/no)'
+    default: 'no'
+    required: false
   debug:
     description: 'Set debug mode (yes/no)'
     default: 'no'
@@ -59,6 +63,7 @@ runs:
         INPUT_CUSTOM: ${{ inputs.custom }}
         INPUT_TYPE: ${{ inputs.type }}
         INPUT_ZIP_RELEASE_ARCHIVE: ${{ inputs.env_variable }}
+        INPUT_VERBOSE: ${{ inputs.verbose }}
         DEBUG_MODE: ${{ inputs.debug }}
         MSYS_NO_PATHCONV: true
       run: $GITHUB_ACTION_PATH/entrypoint.sh
