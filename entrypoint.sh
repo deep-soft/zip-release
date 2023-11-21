@@ -62,11 +62,15 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
   else
     EXCLUSIONS="";
+    QUIET="-q";
+    if [[ $INPUT_VERBOSE == "yes" ]]; then
+      QUIET="";
+    fi
     if [[ -n "$INPUT_EXCLUSIONS" ]]; then
       EXCLUSIONS="-x $INPUT_EXCLUSIONS";
     fi
-    echo "CMD: zip -r $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM";
-    zip -r $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    echo "CMD: zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM";
+    zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     if [[ "$RUNNER_OS" != "macOS" ]]; then
       ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
@@ -74,6 +78,10 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
   fi
 elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INPUT_TYPE" == "tar.xz" ]]; then
   EXCLUSIONS='--exclude=*.tar* ';
+  VERBOSE="";
+  if [[ $INPUT_VERBOSE == "yes" ]]; then
+    VERBOSE="-v";
+  fi
   if [[ -n "$INPUT_EXCLUSIONS" ]]; then
     for EXCLUSION in $INPUT_EXCLUSIONS
     do
@@ -82,9 +90,9 @@ elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INP
     done
   fi
   if [[ "$INPUT_TYPE" == "tar.xz" ]]; then
-    tar $EXCLUSIONS -cv $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM | xz -9 > $INPUT_FILENAME || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    tar $EXCLUSIONS -c $VERBOSE $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM | xz -9 > $INPUT_FILENAME || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
   else
-    tar $EXCLUSIONS -zcvf $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    tar $EXCLUSIONS -zcf $VERBOSE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
   fi
   if [[ "$RUNNER_OS" != "macOS" ]]; then
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
