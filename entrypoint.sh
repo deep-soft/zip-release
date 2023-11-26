@@ -10,11 +10,6 @@ StartTime="$(date -u +%s)";
 CrtDate=$(date "+%F^%H:%M:%S");
 echo "Start: " $CrtDate;
 
-# add * to .
-if [[ "$INPUT_PATH" == "." ]]; then
-  INPUT_PATH="* .";
-fi
-
 # change path separator to /
 INPUT_DIRECTORY=$(echo $INPUT_DIRECTORY | tr '\\' /);
 
@@ -82,6 +77,10 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     fi
   fi
 elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INPUT_TYPE" == "tar.xz" ]]; then
+  # do not add ^./ to filename in tar archive
+  if [[ "$INPUT_PATH" == "." ]]; then
+    INPUT_PATH=". --transform='s:^./::g' ";
+  fi
   EXCLUSIONS='--exclude=*.tar* ';
   VERBOSE="";
   if [[ $INPUT_VERBOSE == "yes" ]]; then
