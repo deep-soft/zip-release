@@ -79,7 +79,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
 elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INPUT_TYPE" == "tar.xz" ]]; then
   # do not add ^./ to filename in tar archive
   if [[ "$INPUT_PATH" == "." ]]; then
-    INPUT_PATH=". --transform='s:^./::g' ";
+    INPUT_PATH=". --transform='s!^./!!g' ";
   fi
   EXCLUSIONS='--exclude=*.tar* ';
   VERBOSE="";
