@@ -1,4 +1,5 @@
 #! /bin/bash
+#BOF
 
 # Create archive or exit if command fails
 set -euf
@@ -120,3 +121,4 @@ if [[ $INPUT_FILENAME =~ ^/ ]]; then
 else
   echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_DIRECTORY/$INPUT_FILENAME" >> $GITHUB_ENV;
 fi
+#EOF
