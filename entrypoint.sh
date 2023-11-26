@@ -12,7 +12,7 @@ echo "Start: " $CrtDate;
 
 # add * to .
 if [[ "$INPUT_PATH" == "." ]]; then
-  INPUT_PATH=".*";
+  INPUT_PATH="* .";
 fi
 
 # change path separator to /
