@@ -10,6 +10,11 @@ StartTime="$(date -u +%s)";
 CrtDate=$(date "+%F^%H:%M:%S");
 echo "Start: " $CrtDate;
 
+# add * to .
+if [[ "$INPUT_PATH" == "." ]]; then
+  INPUT_PATH=".*";
+fi
+
 # change path separator to /
 INPUT_DIRECTORY=$(echo $INPUT_DIRECTORY | tr '\\' /);
 
