@@ -35,9 +35,6 @@ if [[ "$INPUT_DIRECTORY" != "." ]]; then
   fi
 fi
 
-echo "List dir:";
-ls -l;
-
 ARCHIVE_SIZE="";
 INCLUSIONS="$INPUT_INCLUSIONS";
 
