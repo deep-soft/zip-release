@@ -73,7 +73,9 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     echo "CMD:[zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
     zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
-    if [[ "$RUNNER_OS" != "macOS" ]]; then
+    if [[ "$RUNNER_OS" == "macOS" ]]; then
+      ARCHIVE_SIZE=$(stat -c %s $INPUT_FILENAME);
+    else
       ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
     fi
   fi
