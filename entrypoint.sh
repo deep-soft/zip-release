@@ -120,6 +120,8 @@ if [[ $INPUT_FILENAME =~ ^/ ]]; then
 else
   if [[ $INPUT_DIRECTORY != '.' ]]; then
     echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_DIRECTORY/$INPUT_FILENAME" >> $GITHUB_ENV;
+  else
+    echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_FILENAME" >> $GITHUB_ENV;
   fi
 fi
 #EOF
