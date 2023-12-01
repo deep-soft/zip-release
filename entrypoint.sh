@@ -77,7 +77,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     fi
     echo "CMD:[zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
     #old zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
-    find $INPUT_PATH $INCLUSIONS $EXCLUSIONS -print | awk -F/ '{a[$NF]=$0}END{for(i in a)print a[i]}' | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    find . -name $INPUT_PATH $INCLUSIONS $EXCLUSIONS -print | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
