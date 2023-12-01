@@ -51,6 +51,7 @@ jobs:
             unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }}
           else
             xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }}
+            tar -tf ${{ env.ZIP_RELEASE_ARCHIVE }}
           fi
 
       - name: test win
