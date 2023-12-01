@@ -131,7 +131,7 @@ jobs:
           type: "${{ matrix.job.type }}"
           filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
           directory: TestDir
-          verbose: true
+          verbose: "yes"
           path: "TestFile*"
 
       - name: test lin / mac
