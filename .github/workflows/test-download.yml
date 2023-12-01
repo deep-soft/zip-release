@@ -1,6 +1,10 @@
 name: test download
 on:
   workflow_dispatch:
+    inputs:
+      DEBUG_MODE:
+        description: DEBUG_MODE
+        default: 'no'
 
 jobs:
   test_download:
@@ -86,6 +90,7 @@ jobs:
           type: "${{ matrix.job.type }}"
           filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
           verbose: 'yes'
+          debug: ${{ inputs.DEBUG_MODE }}
 
       - name: test lin / mac
         if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
@@ -135,8 +140,9 @@ jobs:
           type: "${{ matrix.job.type }}"
           filename: 'tst-path-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
           directory: TestDir
-          verbose: 'yes'
           path: "TestFile*"
+          verbose: 'yes'
+          debug: ${{ inputs.DEBUG_MODE }}
 
       - name: test lin / mac
         if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
