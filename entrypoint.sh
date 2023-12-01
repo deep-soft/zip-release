@@ -91,7 +91,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     # reset INCLUSIONS and EXCLUSIONS, not working from find
     INCLUSIONS="";
     EXCLUSIONS="";
-    find . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | grep -v "^.git" -v "^./.git" | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    find . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | grep -v ".git" | grep -v "./.git" | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
