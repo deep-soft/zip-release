@@ -29,9 +29,13 @@ jobs:
         run: |
           mkdir TestDir
           pushd TestDir
-          echo "TestFile" > TestFile
-          echo "TestFile2" > TestFile2
-          echo "TestFile.exe" > TestFile.exe
+          echo "a" > "a"
+          echo "b" > "b"
+          echo "TestFile" > "TestFile"
+          echo "TestFile2" > "TestFile2"
+          echo "TestFile.exe" > "TestFile.exe"
+          echo "someotherfile" > "someotherfile"
+          echo "someotherfile2" > "someotherfile2"
           popd
 
       - uses: deep-soft/zip-release@main
@@ -40,7 +44,9 @@ jobs:
           filename: 'tst-path-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
           directory: TestDir
           path: "TestFile*"
-          verbose: 'yes'
+          inclusions: 'a'
+          exclusions: 'someotherfile*'
+          verbose: ${{ inputs.DEBUG_MODE }}
           debug: ${{ inputs.DEBUG_MODE }}
 
       - name: test lin / mac
