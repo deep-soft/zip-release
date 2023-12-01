@@ -69,10 +69,10 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     fi
     INCLUSIONS="";
     if [[ -n "$INPUT_INCLUSIONS" ]]; then
-      INCLUSIONS=" \( -name $INPUT_PATH -or -name $INPUT_INCLUSIONS \) ";
+      INCLUSIONS=" \( -name \"$INPUT_PATH\" -or -name \"$INPUT_INCLUSIONS\" \) ";
       #old INCLUSIONS="$INPUT_INCLUSIONS";
     else
-      INCLUSIONS=" \( -name $INPUT_PATH \) ";
+      INCLUSIONS=" \( -name \"$INPUT_PATH\" \) ";
     fi
     QUIET="-q";
     if [[ $INPUT_VERBOSE == "yes" ]]; then
