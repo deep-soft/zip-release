@@ -65,7 +65,7 @@ jobs:
 #            tmp
 
   test_arc:
-    name: test_zip-${{ matrix.job.cfg }}-${{ matrix.job.type }}
+    name: test_arc-${{ matrix.job.cfg }}-${{ matrix.job.type }}
     runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
@@ -85,6 +85,54 @@ jobs:
         with:
           type: "${{ matrix.job.type }}"
           filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
+
+      - name: test lin / mac
+        if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
+        shell: bash
+        run: |
+          if [[ ${{ matrix.job.type }} == 'zip' ]]; then
+            unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }}
+          else
+            xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }}
+          fi
+
+      - name: test win
+        if: ${{ matrix.job.cfg == 'win' }}
+        shell: bash
+        run: |
+          7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
+
+  test_zip:
+    name: test_zip-${{ matrix.job.cfg }}-${{ matrix.job.type }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { cfg: lin, type: 'zip'   , os: ubuntu-latest  }
+          - { cfg: win, type: 'zip'   , os: windows-latest }
+          - { cfg: mac, type: 'zip'   , os: macos-latest   }
+    steps:
+      - name: checkout
+        uses: deep-soft/checkout@v3
+
+      - name: create test directory and file
+        shell: bash
+        run: |
+          mkdir TestDir
+          pushd TestDir
+          echo "TestFile" > TestFile
+          echo "TestFile2" > TestFile2
+          echo "TestFile.exe" > TestFile.exe
+          popd
+
+      - uses: deep-soft/zip-release@main
+        with:
+          type: "${{ matrix.job.type }}"
+          filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
+          directory: TestDir
+          verbose: true
+          path: "TestFile*"
 
       - name: test lin / mac
         if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
