@@ -44,8 +44,8 @@ jobs:
           filename: 'tst-path-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
           directory: TestDir
           path: "TestFile*"
-          inclusions: 'a'
-          exclusions: 'someotherfile*'
+          #inclusions: 'a'
+          #exclusions: 'someotherfile*'
           verbose: ${{ inputs.DEBUG_MODE }}
           debug: ${{ inputs.DEBUG_MODE }}
 
