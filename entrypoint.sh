@@ -68,14 +68,16 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       QUIET="";
     fi
     if [[ -n "$INPUT_EXCLUSIONS" ]]; then
-      EXCLUSIONS="-x $INPUT_EXCLUSIONS";
+      EXCLUSIONS="-name $INPUT_EXCLUSIONS -prune -o ";
+      #old EXCLUSIONS="-x $INPUT_EXCLUSIONS";
     fi
     if [[ $INPUT_VERBOSE == "yes" ]]; then
       echo "RUNNER_OS=$RUNNER_OS";
       zip --version;
     fi
     echo "CMD:[zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
-    zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    #old zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    find $INPUT_PATH $INCLUSIONS $EXCLUSIONS -print | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
