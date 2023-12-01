@@ -1,5 +1,6 @@
 #! /bin/bash
 #BOF
+# !!! zip on macOS and Linux # reset INCLUSIONS and EXCLUSIONS, not working from find
 
 # Create archive or exit if command fails
 set -euf
@@ -87,10 +88,9 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     if [[ "$INPUT_PATH" == "." ]]; then
       INPUT_PATH="*";
     fi
-    if [[ "$RUNNER_OS" != "macOS" ]]; then
-      $INCLUSIONS="";
-      $EXCLUSIONS="";
-    fi
+    # reset INCLUSIONS and EXCLUSIONS, not working from find
+    INCLUSIONS="";
+    EXCLUSIONS="";
     find . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | grep -v "^.git" -v "^./.git" | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     if [[ "$RUNNER_OS" == "macOS" ]]; then
