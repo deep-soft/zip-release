@@ -63,13 +63,18 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
   else
     EXCLUSIONS="";
-    QUIET="-q";
-    if [[ $INPUT_VERBOSE == "yes" ]]; then
-      QUIET="";
-    fi
     if [[ -n "$INPUT_EXCLUSIONS" ]]; then
       EXCLUSIONS="-name $INPUT_EXCLUSIONS -prune -o ";
       #old EXCLUSIONS="-x $INPUT_EXCLUSIONS";
+    fi
+    INCLUSIONS="";
+    if [[ -n "$INPUT_INCLUSIONS" ]]; then
+      INCLUSIONS="-name $INPUT_INCLUSIONS ";
+      #old INCLUSIONS="$INPUT_INCLUSIONS";
+    fi
+    QUIET="-q";
+    if [[ $INPUT_VERBOSE == "yes" ]]; then
+      QUIET="";
     fi
     if [[ $INPUT_VERBOSE == "yes" ]]; then
       echo "RUNNER_OS=$RUNNER_OS";
