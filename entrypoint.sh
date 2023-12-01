@@ -54,6 +54,9 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
         EXCLUSIONS+="$EXCLUSION";
       done
     fi
+    if [[ $INPUT_VERBOSE == "yes" ]]; then
+      echo "RUNNER_OS=$RUNNER_OS";
+    fi
     echo "CMD:[7z a -r -ssw -t$INPUT_TYPE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
     7z a -r -ssw -t$INPUT_TYPE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
@@ -67,7 +70,10 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     if [[ -n "$INPUT_EXCLUSIONS" ]]; then
       EXCLUSIONS="-x $INPUT_EXCLUSIONS";
     fi
-    zip --version;
+    if [[ $INPUT_VERBOSE == "yes" ]]; then
+      echo "RUNNER_OS=$RUNNER_OS";
+      zip --version;
+    fi
     echo "CMD:[zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
     zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
@@ -93,6 +99,10 @@ elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INP
       EXCLUSIONS+=" --exclude=";
       EXCLUSIONS+="$EXCLUSION";
     done
+  fi
+  if [[ $INPUT_VERBOSE == "yes" ]]; then
+    echo "RUNNER_OS=$RUNNER_OS";
+    tar --version;
   fi
   if [[ "$INPUT_TYPE" == "tar.xz" ]]; then
     echo "CMD:[tar $EXCLUSIONS -c $VERBOSE $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM | xz -9 > $INPUT_FILENAME]";
