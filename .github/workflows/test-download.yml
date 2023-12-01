@@ -102,8 +102,8 @@ jobs:
         run: |
           7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
 
-  test_zip:
-    name: test_zip-${{ matrix.job.cfg }}-${{ matrix.job.type }}
+  test_path:
+    name: test_path-${{ matrix.job.cfg }}-${{ matrix.job.type }}
     runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
@@ -112,6 +112,9 @@ jobs:
           - { cfg: lin, type: 'zip'   , os: ubuntu-latest  }
           - { cfg: win, type: 'zip'   , os: windows-latest }
           - { cfg: mac, type: 'zip'   , os: macos-latest   }
+          - { cfg: lin, type: 'tar.xz', os: ubuntu-latest  }
+          - { cfg: win, type: 'tar.xz', os: windows-latest }
+          - { cfg: mac, type: 'tar.xz', os: macos-latest   }
     steps:
       - name: checkout
         uses: deep-soft/checkout@v3
@@ -129,7 +132,7 @@ jobs:
       - uses: deep-soft/zip-release@main
         with:
           type: "${{ matrix.job.type }}"
-          filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
+          filename: 'tst-path-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
           directory: TestDir
           verbose: "yes"
           path: "TestFile*"
