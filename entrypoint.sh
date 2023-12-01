@@ -69,8 +69,10 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     fi
     INCLUSIONS="";
     if [[ -n "$INPUT_INCLUSIONS" ]]; then
-      INCLUSIONS=" \( -name $INPUT_INCLUSIONS \) ";
+      INCLUSIONS=" \( -name $INPUT_PATH -or -name $INPUT_INCLUSIONS \) ";
       #old INCLUSIONS="$INPUT_INCLUSIONS";
+    else
+      INCLUSIONS=" \( -name $INPUT_PATH \) ";
     fi
     QUIET="-q";
     if [[ $INPUT_VERBOSE == "yes" ]]; then
@@ -82,7 +84,8 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     fi
     echo "CMD:[zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
     #old zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
-    find . -name $INPUT_PATH $INCLUSIONS $EXCLUSIONS -print | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    #find . -name $INPUT_PATH $INCLUSIONS $EXCLUSIONS -print | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    find . type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
