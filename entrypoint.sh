@@ -1,6 +1,7 @@
 #! /bin/bash
 #BOF
 # !!! zip on macOS and Linux # reset INCLUSIONS and EXCLUSIONS, not working from find
+# add -L to find, follow symlinks?
 
 # Create archive or exit if command fails
 set -euf
@@ -82,7 +83,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       zip --version;
     fi
     echo "CMD:[zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
-    echo "find . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print";
+    echo "find -L . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print";
     #old zip -r $QUIET $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     #find . -name $INPUT_PATH $INCLUSIONS $EXCLUSIONS -print | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     if [[ "$INPUT_PATH" == "." ]]; then
@@ -91,7 +92,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     # reset INCLUSIONS and EXCLUSIONS, not working from find
     INCLUSIONS="";
     EXCLUSIONS="";
-    find . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | grep -v ".git" | grep -v "./.git" | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    find -L . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | grep -v ".git" | grep -v "./.git" | zip -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
