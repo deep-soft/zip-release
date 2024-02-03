@@ -83,6 +83,12 @@ For example:
 
 ```recursive_exclusions: *.txt``` will exclude files ending with `.txt` in any subdirectory.
 
+### `ignore_git`
+Default: yes
+
+Default setting: ignore .git/ folder
+Set 'ignore_git: ''no' to add to archive .git/ folder
+
 ### `env_variable`
 Default: ZIP_RELEASE_ARCHIVE
 
