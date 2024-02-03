@@ -87,7 +87,8 @@ For example:
 Default: yes
 
 Default setting: ignore .git/ folder
-Set 'ignore_git: ''no' to add to archive .git/ folder
+
+Set '''ignore_git: 'no'''' to add to archive .git/ folder
 
 ### `env_variable`
 Default: ZIP_RELEASE_ARCHIVE
