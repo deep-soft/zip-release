@@ -29,6 +29,10 @@ inputs:
     description: 'List of excluded files / directories with recursive wildcards (only applies on Windows with `zip` type)'
     default: ''
     required: false
+  ignore_git:
+    description: 'ignore .git/'
+    default: 'yes'
+    required: false
   custom:
     description: 'Provide any custom parameters to the command'
     default: ''
@@ -60,6 +64,7 @@ runs:
         INPUT_INCLUSIONS: ${{ inputs.inclusions }}
         INPUT_EXCLUSIONS: ${{ inputs.exclusions }}
         INPUT_RECURSIVE_EXCLUSIONS: ${{ inputs.recursive_exclusions }}
+        INPUT_IGNORE_GIT: ${{ inputs.ignore_git }}
         INPUT_CUSTOM: ${{ inputs.custom }}
         INPUT_TYPE: ${{ inputs.type }}
         INPUT_ZIP_RELEASE_ARCHIVE: ${{ inputs.env_variable }}
