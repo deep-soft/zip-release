@@ -90,6 +90,16 @@ Default setting: ignore .git/ folder
 
 Set ```ignore_git: 'no'``` to add to archive .git/ folder
 
+### `volume_size:`
+Default: '2g'
+
+Set volume size for `type: 7z` in bytes or accepted suffix values: b|k|m|g
+
+Example:</br>
+ volume_size: 2g, means volume size is 2 GBytes</br>
+ volume_size: 1024k, means volume size is 1 MByte</br>
+ volume_size: 1073741824, means volume size is 1 GByte or 1024 MBytes</br>
+
 ### `env_variable`
 Default: ZIP_RELEASE_ARCHIVE
 
