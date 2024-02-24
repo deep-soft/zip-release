@@ -41,6 +41,10 @@ inputs:
     description: 'Archive type (zip / 7z / tar / tar.gz / tar.xz)'
     default: 'zip'
     required: false
+  volume_size:
+    description: 'Volume size'
+    default: '2g'
+    required: false
   env_variable:
     description: 'env variable name to set'
     default: 'ZIP_RELEASE_ARCHIVE'
@@ -67,6 +71,7 @@ runs:
         INPUT_IGNORE_GIT: ${{ inputs.ignore_git }}
         INPUT_CUSTOM: ${{ inputs.custom }}
         INPUT_TYPE: ${{ inputs.type }}
+        INPUT_VOLUME_SIZE: ${{ inputs.volume_size }}
         INPUT_ZIP_RELEASE_ARCHIVE: ${{ inputs.env_variable }}
         INPUT_VERBOSE: ${{ inputs.verbose }}
         DEBUG_MODE: ${{ inputs.debug }}
