@@ -60,8 +60,11 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     if [[ $INPUT_VERBOSE == "yes" ]]; then
       echo "RUNNER_OS=$RUNNER_OS";
     fi
-    echo "CMD:[7z a -r -ssw -t$INPUT_TYPE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
-    7z a -r -ssw -t$INPUT_TYPE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
+    if [[ $INPUT_VOLUME_SIZE != '' ]]; then
+      VOL_SIZE="-v$INPUT_VOLUME_SIZE";
+    fi
+    echo "CMD:[7z a -r -ssw -t$INPUT_TYPE $VOL_SIZE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
+    7z a -r -ssw -t$INPUT_TYPE $VOL_SIZE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
   else
