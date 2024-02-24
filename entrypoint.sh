@@ -50,7 +50,6 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
         EXCLUSIONS+=" -x!";
         EXCLUSIONS+="$EXCLUSION";
       done
-
       for EXCLUSION in $INPUT_RECURSIVE_EXCLUSIONS
       do
         EXCLUSIONS+=" -xr!";
@@ -66,7 +65,10 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     echo "CMD:[7z a -r -ssw -t$INPUT_TYPE $VOL_SIZE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM]";
     7z a -r -ssw -t$INPUT_TYPE $VOL_SIZE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
-    ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
+    #ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '(%s bytes) = (%k KB)\p');
+    ls -la $INPUT_FILENAME*;
+    ARCHIVE_FILENAME=$(find . -name "$INPUT_FILENAME*" -printf '%p');
+    ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '%s\n' | awk '{sum+=$1;}END{print sum " bytes";}');
   else
     EXCLUSIONS="";
     if [[ -n "$INPUT_EXCLUSIONS" ]]; then
@@ -102,6 +104,8 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       find -L . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | zip -y -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     fi
     echo 'Done';
+    ls -la $INPUT_FILENAME*;
+    ARCHIVE_FILENAME=$INPUT_FILENAME;
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
     else
@@ -136,6 +140,9 @@ elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INP
     echo "CMD:[tar $EXCLUSIONS -zcf $VERBOSE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM]"
     tar $EXCLUSIONS -zcf $VERBOSE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
   fi
+  echo 'Done';
+  ls -la $INPUT_FILENAME*;
+  ARCHIVE_FILENAME=$INPUT_FILENAME;
   if [[ "$RUNNER_OS" != "macOS" ]]; then
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
   fi
@@ -150,14 +157,14 @@ echo "Finish: " $CrtDate;
 ElapsedTime=$(( FinishTime - StartTime ));
 echo "Elapsed: $ElapsedTime";
 
-printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$INPUT_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime";
-if [[ $INPUT_FILENAME =~ ^/ ]]; then
-  echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_FILENAME" >> $GITHUB_ENV;
+printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime";
+if [[ $ARCHIVE_FILENAME =~ ^/ ]]; then
+  echo "$INPUT_ZIP_RELEASE_ARCHIVE=$ARCHIVE_FILENAME" >> $GITHUB_ENV;
 else
   if [[ $INPUT_DIRECTORY != '.' ]]; then
-    echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_DIRECTORY/$INPUT_FILENAME" >> $GITHUB_ENV;
+    echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_DIRECTORY/$ARCHIVE_FILENAME" >> $GITHUB_ENV;
   else
-    echo "$INPUT_ZIP_RELEASE_ARCHIVE=$INPUT_FILENAME" >> $GITHUB_ENV;
+    echo "$INPUT_ZIP_RELEASE_ARCHIVE=$ARCHIVE_FILENAME" >> $GITHUB_ENV;
   fi
 fi
 #EOF
