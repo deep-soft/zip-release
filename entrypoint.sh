@@ -66,7 +66,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     7z a -r -ssw -t$INPUT_TYPE $VOL_SIZE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $EXCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     echo 'Done';
     #ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '(%s bytes) = (%k KB)\p');
-    ls -la $INPUT_FILENAME*;
+    ls -la $INPUT_FILENAME* || true;
     ARCHIVE_FILENAME=$(find . -name "$INPUT_FILENAME*" -printf '%p');
     ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '%s\n' | awk '{sum+=$1;}END{print sum " bytes";}');
   else
@@ -104,7 +104,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       find -L . -name "$INPUT_PATH" -type f $INCLUSIONS $EXCLUSIONS -print | sed "s!^./!!" | sort | uniq | zip -y -r $QUIET $INPUT_FILENAME -@ $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
     fi
     echo 'Done';
-    ls -la $INPUT_FILENAME*;
+    ls -la $INPUT_FILENAME* || true;
     ARCHIVE_FILENAME=$INPUT_FILENAME;
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
@@ -141,7 +141,7 @@ elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INP
     tar $EXCLUSIONS -zcf $VERBOSE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
   fi
   echo 'Done';
-  ls -la $INPUT_FILENAME*;
+  ls -la $INPUT_FILENAME* || true;
   ARCHIVE_FILENAME=$INPUT_FILENAME;
   if [[ "$RUNNER_OS" != "macOS" ]]; then
     ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
