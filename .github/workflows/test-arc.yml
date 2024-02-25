@@ -22,7 +22,7 @@ jobs:
           - { cfg: mac, type: 'tar.xz', os: macos-latest   }
     steps:
       - name: checkout
-        uses: deep-soft/checkout@v3
+        uses: deep-soft/checkout@v4
 
       - uses: deep-soft/zip-release@main
         with:
