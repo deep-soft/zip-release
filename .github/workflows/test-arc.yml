@@ -55,9 +55,9 @@ jobs:
           else
             echo "unsupported OS: ${{ matrix.job.cfg }}";
           fi
-          echo "VOLUMES_LIST_NAME=${{ zip_release_action.outputs.VOLUMES_LIST_NAME }}";
-          echo "VOLUMES_NUMBER=${{ zip_release_action.outputs.VOLUMES_NUMBER }}";
-          echo "VOLUMES_FILES=${{ zip_release_action.outputs.VOLUMES_FILES }}";
+          echo "VOLUMES_LIST_NAME=${{ steps.zip_release_action.outputs.VOLUMES_LIST_NAME }}";
+          echo "VOLUMES_NUMBER=${{ steps.zip_release_action.outputs.VOLUMES_NUMBER }}";
+          echo "VOLUMES_FILES=${{ steps.zip_release_action.outputs.VOLUMES_FILES }}";
 
 #      - name: test lin / mac
 #        if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
