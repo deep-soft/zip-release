@@ -40,7 +40,7 @@ fi
 
 ARCHIVE_SIZE="";
 VOLUMES_LIST_NAME='';
-VOLUMES_FILES='';
+VOLUMES_FILES=$INPUT_FILENAME;
 VOLUMES_NUMBER=1;
 INCLUSIONS="$INPUT_INCLUSIONS";
 
@@ -185,6 +185,11 @@ echo "Finish: " $CrtDate;
 
 ElapsedTime=$(( FinishTime - StartTime ));
 echo "Elapsed: $ElapsedTime";
+
+if [[ -f $VOLUMES_LIST_NAME ]]; then
+  echo "Volumes: [$VOLUMES_NUMBER]";
+  cat $VOLUMES_LIST_NAME;
+fi
 
 #printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime";
 printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], volumes=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$VOLUMES_NUMBER" "$RUNNER_OS" "$ElapsedTime";
