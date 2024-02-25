@@ -58,12 +58,12 @@ inputs:
     default: 'no'
     required: false
 outputs:
-  volumes:
-    description: 'Names of volumes, concatenated with ::'
   volumes_list_name:
     description: 'Name of file list, containing volumes filenames'
   volumes_number:
     description: 'Number of volumes'
+  volumes_files:
+    description: 'Names of volumes, concatenated with ::'
 runs:
   using: composite
   steps:
