@@ -72,10 +72,24 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
       ARCHIVE_FILENAME=$INPUT_FILENAME;
     else
+      if [[ -f $INPUT_FILENAME.files ]]; then
+        rm $INPUT_FILENAME.files;
+      fi
       ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '%s\n' | awk '{sum+=$1;}END{print sum " bytes";}');
-      ARCHIVE_FILENAME=$(find . -name "$INPUT_FILENAME*" -printf '%p\n');
-      echo $ARCHIVE_FILENAME > $INPUT_FILENAME.000;
-      ARCHIVE_FILENAME=$INPUT_FILENAME.000;
+      ARCHIVE_VOLUMES_FILENAMES=$(find . -name "$INPUT_FILENAME*" -printf '%p\n' | sort -n);
+      echo "$ARCHIVE_VOLUMES_FILENAMES" > $INPUT_FILENAME.files;
+      ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
+      volumes_number=$(wc -l < $INPUT_FILENAME.files);
+      volumes_list_name=$INPUT_FILENAME.files;
+      while read -r line
+      do
+        volumes_files=$volumes_files$colon$line;
+        colon=':';
+      done < $volumes_list_name;
+      # set OUTPUT variables
+      echo "VOLUMES_LIST_NAME=$volumes_list_name" >> $GITHUB_OUTPUT
+      echo "VOLUMES_NUMBER=$volumes_number"       >> $GITHUB_OUTPUT
+      echo "VOLUMES_FILES=$volumes_files"         >> $GITHUB_OUTPUT
     fi
   else
     EXCLUSIONS="";
