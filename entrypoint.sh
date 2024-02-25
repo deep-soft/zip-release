@@ -81,6 +81,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
       volumes_number=$(wc -l < $INPUT_FILENAME.files);
       volumes_list_name=$INPUT_FILENAME.files;
+      volumes_files='';
       while read -r line
       do
         volumes_files=$volumes_files$colon$line;
