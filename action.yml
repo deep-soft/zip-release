@@ -60,6 +60,8 @@ inputs:
 outputs:
   volumes:
     description: 'Names of volumes, concatenated with ::'
+  volumes_list_name:
+    description: 'Name of file list, containing volumes filenames'
   volumes_number:
     description: 'Number of volumes'
 runs:
@@ -82,4 +84,3 @@ runs:
         DEBUG_MODE: ${{ inputs.debug }}
         MSYS_NO_PATHCONV: true
       run: $GITHUB_ACTION_PATH/entrypoint.sh
-
