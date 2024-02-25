@@ -2,6 +2,9 @@ name: test arc
 on:
   workflow_dispatch:
     inputs:
+      volume_size:
+        description: 'volume size'
+        default: 2g
       DEBUG_MODE:
         description: DEBUG_MODE
         default: 'no'
@@ -31,6 +34,7 @@ jobs:
         with:
           type: "${{ matrix.job.type }}"
           filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
+          volume_size: ${{ inputs.volume_size }}
           verbose: ${{ inputs.DEBUG_MODE }}
           debug: ${{ inputs.DEBUG_MODE }}
 
