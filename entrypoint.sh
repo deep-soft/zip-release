@@ -68,7 +68,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     #ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '(%s bytes) = (%k KB)\p');
     #ls -la "$INPUT_FILENAME*" || true;
     ls -la || true;
-    ARCHIVE_FILENAME=$(find . -name "$INPUT_FILENAME*" -printf '%p');
+    ARCHIVE_FILENAME=$(find . -name "$INPUT_FILENAME*" -printf '%p\n');
     ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '%s\n' | awk '{sum+=$1;}END{print sum " bytes";}');
   else
     EXCLUSIONS="";
