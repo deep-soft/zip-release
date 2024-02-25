@@ -82,6 +82,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       volumes_number=$(wc -l < $INPUT_FILENAME.files);
       volumes_list_name=$INPUT_FILENAME.files;
       volumes_files='';
+      colon='';
       while read -r line
       do
         volumes_files=$volumes_files$colon$line;
