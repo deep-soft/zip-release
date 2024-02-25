@@ -43,7 +43,7 @@ inputs:
     required: false
   volume_size:
     description: 'Volume size'
-    default: '2g'
+    default: ''
     required: false
   env_variable:
     description: 'env variable name to set'
