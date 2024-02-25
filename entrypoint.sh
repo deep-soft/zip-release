@@ -39,6 +39,9 @@ if [[ "$INPUT_DIRECTORY" != "." ]]; then
 fi
 
 ARCHIVE_SIZE="";
+VOLUMES_LIST_NAME='';
+VOLUMES_FILES='';
+VOLUMES_NUMBER=1;
 INCLUSIONS="$INPUT_INCLUSIONS";
 
 if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
@@ -79,19 +82,19 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       ARCHIVE_VOLUMES_FILENAMES=$(find . -name "$INPUT_FILENAME*" -printf '%p\n' | sort -n);
       echo "$ARCHIVE_VOLUMES_FILENAMES" > $INPUT_FILENAME.files;
       ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
-      volumes_number=$(wc -l < $INPUT_FILENAME.files);
-      volumes_list_name=$INPUT_FILENAME.files;
-      volumes_files='';
+      VOLUMES_NUMBER=$(wc -l < $INPUT_FILENAME.files);
+      VOLUMES_LIST_NAME=$INPUT_FILENAME.files;
+      VOLUMES_FILES='';
       colon='';
       while read -r line
       do
-        volumes_files=$volumes_files$colon$line;
+        VOLUMES_FILES=$VOLUMES_FILES$colon$line;
         colon=':';
-      done < $volumes_list_name;
+      done < $VOLUMES_LIST_NAME;
       # set OUTPUT variables
-      echo "VOLUMES_LIST_NAME=$volumes_list_name" >> $GITHUB_OUTPUT
-      echo "VOLUMES_NUMBER=$volumes_number"       >> $GITHUB_OUTPUT
-      echo "VOLUMES_FILES=$volumes_files"         >> $GITHUB_OUTPUT
+      # echo "VOLUMES_LIST_NAME=$VOLUMES_LIST_NAME" >> $GITHUB_OUTPUT
+      # echo "VOLUMES_NUMBER=$VOLUMES_NUMBER"       >> $GITHUB_OUTPUT
+      # echo "VOLUMES_FILES=$VOLUMES_FILES"         >> $GITHUB_OUTPUT
     fi
   else
     EXCLUSIONS="";
@@ -183,7 +186,8 @@ echo "Finish: " $CrtDate;
 ElapsedTime=$(( FinishTime - StartTime ));
 echo "Elapsed: $ElapsedTime";
 
-printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime";
+#printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime";
+printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], volumes=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$VOLUMES_NUMBER" "$RUNNER_OS" "$ElapsedTime";
 if [[ $ARCHIVE_FILENAME =~ ^/ ]]; then
   echo "$INPUT_ZIP_RELEASE_ARCHIVE=$ARCHIVE_FILENAME" >> $GITHUB_ENV;
 else
@@ -193,4 +197,8 @@ else
     echo "$INPUT_ZIP_RELEASE_ARCHIVE=$ARCHIVE_FILENAME" >> $GITHUB_ENV;
   fi
 fi
+# set OUTPUT variables
+echo "VOLUMES_LIST_NAME=$VOLUMES_LIST_NAME" >> $GITHUB_OUTPUT
+echo "VOLUMES_NUMBER=$VOLUMES_NUMBER"       >> $GITHUB_OUTPUT
+echo "VOLUMES_FILES=$VOLUMES_FILES"         >> $GITHUB_OUTPUT
 #EOF
