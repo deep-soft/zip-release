@@ -119,3 +119,21 @@ Provide any custom parameters to the command.
 For example:
 
 ```custom: --ignore-failed-read``` option used with `tar` command, which allows to ignore and continue on unreadable files. 
+
+### `outputs:`
+```
+  volumes_list_name:
+    description: 'Name of file list, containing volumes filenames'
+    value: ${{ steps.zip_release_run.outputs.volumes_list_name }}
+  volumes_number:
+    description: 'Number of volumes'
+    value: ${{ steps.zip_release_run.outputs.volumes_number }}
+  volumes_files:
+    description: 'Names of volumes, concatenated with :'
+    value: ${{ steps.zip_release_run.outputs.volumes_files }}
+```
+```example:
+echo "VOLUMES_LIST_NAME=${{ steps.zip_release_action.outputs.VOLUMES_LIST_NAME }}";
+echo "VOLUMES_NUMBER=${{ steps.zip_release_action.outputs.VOLUMES_NUMBER }}";
+echo "VOLUMES_FILES=${{ steps.zip_release_action.outputs.VOLUMES_FILES }}";
+```
