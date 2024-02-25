@@ -58,16 +58,17 @@ inputs:
     default: 'no'
     required: false
 outputs:
-  volumes_list_name:
+  volumes_list_name: ${{ steps.zip_release_run.outputs.volumes_list_name }}
     description: 'Name of file list, containing volumes filenames'
-  volumes_number:
+  volumes_number: ${{ steps.zip_release_run.outputs.volumes_number }}
     description: 'Number of volumes'
-  volumes_files:
-    description: 'Names of volumes, concatenated with ::'
+  volumes_files: ${{ steps.zip_release_run.outputs.volumes_files }}
+    description: 'Names of volumes, concatenated with :'
 runs:
   using: composite
   steps:
     - shell: bash
+      id: zip_release_run
       env:
         INPUT_FILENAME: ${{ inputs.filename }}
         INPUT_PATH: ${{ inputs.path }}
