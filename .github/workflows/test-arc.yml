@@ -38,18 +38,37 @@ jobs:
           verbose: ${{ inputs.DEBUG_MODE }}
           debug: ${{ inputs.DEBUG_MODE }}
 
-      - name: test lin / mac
-        if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
+      - name: test lin / mac / win
         shell: bash
         run: |
-          if [[ ${{ matrix.job.type }} == 'zip' ]]; then
-            unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }}
+          if [[ ${{ matrix.job.cfg }} == 'win' ]]; then
+            7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
+          elif [[ ${{ matrix.job.cfg }} == 'lin' || ${{ matrix.job.cfg }} == 'mac' ]]; then
+            if [[ ${{ matrix.job.type }} == '7z' ]]; then
+              echo "7z not supported on ${{ matrix.job.os }};
+            elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
+              unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }};
+            else
+              xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }};
+            fi
           else
-            xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }}
+            echo "unsupported OS: ${{ matrix.job.cfg }}";
           fi
 
-      - name: test win
-        if: ${{ matrix.job.cfg == 'win' }}
-        shell: bash
-        run: |
-          7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
+#      - name: test lin / mac
+#        if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
+#        shell: bash
+#        run: |
+#          if [[ ${{ matrix.job.type }} == '7z' ]]; then
+#            echo "7z not supported on ${{ matrix.job.os }};
+#          elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
+#            unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }};
+#          else
+#            xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }};
+#          fi
+#
+#      - name: test win
+#        if: ${{ matrix.job.cfg == 'win' }}
+#        shell: bash
+#        run: |
+#          7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
