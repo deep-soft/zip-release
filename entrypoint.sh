@@ -168,6 +168,9 @@ elif [[ "$INPUT_TYPE" == "tar" ]] || [[ "$INPUT_TYPE" == "tar.gz" ]] || [[ "$INP
     echo "CMD:[tar $EXCLUSIONS -zcf $VERBOSE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM]"
     tar $EXCLUSIONS -zcf $VERBOSE $INPUT_FILENAME $INPUT_PATH $INCLUSIONS $INPUT_CUSTOM || { printf "\n⛔ Unable to create %s archive.\n" "$INPUT_TYPE"; exit 1;  };
   fi
+  if [[ "$INPUT_PATH" == ". --transform=s!^./!!g " ]]; then
+    INPUT_PATH=".";
+  fi
   echo 'Done';
   # ls -la "$INPUT_FILENAME*" || true;
   ls -la || true;
