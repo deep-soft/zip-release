@@ -87,5 +87,4 @@ runs:
         DEBUG_MODE: ${{ inputs.debug }}
         MSYS_NO_PATHCONV: true
       shell: bash
-      working-directory: ${{ github.action_path }}
       run: $GITHUB_ACTION_PATH/entrypoint.sh
