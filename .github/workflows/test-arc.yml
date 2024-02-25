@@ -14,6 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         job:
+          - { cfg: lin, type: '7z'    , os: ubuntu-latest  }
+          - { cfg: win, type: '7z'    , os: windows-latest }
+          - { cfg: mac, type: '7z'    , os: macos-latest   }
           - { cfg: lin, type: 'zip'   , os: ubuntu-latest  }
           - { cfg: win, type: 'zip'   , os: windows-latest }
           - { cfg: mac, type: 'zip'   , os: macos-latest   }
