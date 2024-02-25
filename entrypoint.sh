@@ -67,9 +67,16 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     echo 'Done';
     #ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '(%s bytes) = (%k KB)\p');
     #ls -la "$INPUT_FILENAME*" || true;
-    ls -la || true;
-    ARCHIVE_FILENAME=$(find . -name "$INPUT_FILENAME*" -printf '%p::');
-    ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '%s\n' | awk '{sum+=$1;}END{print sum " bytes";}');
+    #ls -la || true;
+    if [[ -f $INPUT_FILENAME ]]; then
+      ARCHIVE_SIZE=$(find . -name $INPUT_FILENAME -printf '(%s bytes) = (%k KB)');
+      ARCHIVE_FILENAME=$INPUT_FILENAME;
+    else
+      ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '%s\n' | awk '{sum+=$1;}END{print sum " bytes";}');
+      ARCHIVE_FILENAME=$(find . -name "$INPUT_FILENAME*" -printf '%p\n');
+      echo $ARCHIVE_FILENAME > $INPUT_FILENAME.000;
+      ARCHIVE_FILENAME=$INPUT_FILENAME.000;
+    fi
   else
     EXCLUSIONS="";
     if [[ -n "$INPUT_EXCLUSIONS" ]]; then
@@ -106,7 +113,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
     fi
     echo 'Done';
     #ls -la "$INPUT_FILENAME*" || true;
-    ls -la || true;
+    #ls -la || true;
     ARCHIVE_FILENAME=$INPUT_FILENAME;
     if [[ "$RUNNER_OS" == "macOS" ]]; then
       ARCHIVE_SIZE=$(stat -f %z $INPUT_FILENAME);
