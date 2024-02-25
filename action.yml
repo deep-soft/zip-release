@@ -57,6 +57,11 @@ inputs:
     description: 'Set debug mode (yes/no)'
     default: 'no'
     required: false
+outputs:
+  volumes:
+    description: 'Names of volumes, concatenated with ::'
+  volumes_number:
+    description: 'Number of volumes'
 runs:
   using: composite
   steps:
