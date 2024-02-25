@@ -45,7 +45,7 @@ jobs:
             7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
           elif [[ ${{ matrix.job.cfg }} == 'lin' || ${{ matrix.job.cfg }} == 'mac' ]]; then
             if [[ ${{ matrix.job.type }} == '7z' ]]; then
-              echo "7z not supported on ${{ matrix.job.os }};
+              echo "7z not supported on ${{ matrix.job.os }}";
             elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
               unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }};
             else
