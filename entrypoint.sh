@@ -86,6 +86,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
         ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
         mv $ARCHIVE_FILENAME $INPUT_FILENAME;
         ARCHIVE_FILENAME=$INPUT_FILENAME;
+        echo "$ARCHIVE_FILENAME" > $INPUT_FILENAME.files;
       else
         ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
       fi
