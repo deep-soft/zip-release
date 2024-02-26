@@ -196,7 +196,7 @@ fi
 
 #printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$RUNNER_OS" "$ElapsedTime";
 printf "\n✔ Successfully created archive=[%s], dir=[%s], name=[%s], path=[%s], size=[%s], volumes=[%s], runner=[%s] duration=[%ssec]...\n" "$INPUT_TYPE" "$INPUT_DIRECTORY" "$ARCHIVE_FILENAME" "$INPUT_PATH" "$ARCHIVE_SIZE" "$VOLUMES_NUMBER" "$RUNNER_OS" "$ElapsedTime";
-if [[ $ARCHIVE_FILENAME =~ ^/ ]]; then
+if [[ $ARCHIVE_FILENAME =~ ^/ || $ARCHIVE_FILENAME =~ ":" ]]; then
   echo "$INPUT_ZIP_RELEASE_ARCHIVE=$ARCHIVE_FILENAME" >> $GITHUB_ENV;
 else
   if [[ $INPUT_DIRECTORY != '.' ]]; then
