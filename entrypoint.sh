@@ -82,7 +82,7 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       ARCHIVE_VOLUMES_FILENAMES=$(find . -name "$INPUT_FILENAME*" -printf '%p\n' | sort -n);
       echo "$ARCHIVE_VOLUMES_FILENAMES" > $INPUT_FILENAME.files;
       VOLUMES_NUMBER=$(wc -l < $INPUT_FILENAME.files);
-      if [[ $VOLUMES_NUMBER eq 1 ]]; then
+      if [[ "$VOLUMES_NUMBER" == "1" ]]; then
         ARCHIVE_FILENAME=$INPUT_FILENAME;
       else
         ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
