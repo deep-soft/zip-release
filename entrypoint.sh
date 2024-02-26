@@ -81,8 +81,12 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       ARCHIVE_SIZE=$(find . -name "$INPUT_FILENAME*" -printf '%s\n' | awk '{sum+=$1;}END{print sum " bytes";}');
       ARCHIVE_VOLUMES_FILENAMES=$(find . -name "$INPUT_FILENAME*" -printf '%p\n' | sort -n);
       echo "$ARCHIVE_VOLUMES_FILENAMES" > $INPUT_FILENAME.files;
-      ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
       VOLUMES_NUMBER=$(wc -l < $INPUT_FILENAME.files);
+      if [[ $VOLUMES_NUMBER eq 1 ]]; then
+        ARCHIVE_FILENAME=$INPUT_FILENAME;
+      else
+        ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
+      fi
       VOLUMES_LIST_NAME=$INPUT_FILENAME.files;
       VOLUMES_FILES='';
       colon='';
