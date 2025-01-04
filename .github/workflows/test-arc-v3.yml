@@ -65,14 +65,14 @@ jobs:
           mkdir './SignOutput'
           cd './SignOutput'
           if [[ ${{ matrix.job.cfg }} == 'win' ]]; then
-            7z x ${{ env.ZIP_RELEASE_ARCHIVE }}
+            7z x ../${{ env.ZIP_RELEASE_ARCHIVE }}
           elif [[ ${{ matrix.job.cfg }} == 'lin' || ${{ matrix.job.cfg }} == 'mac' ]]; then
             if [[ ${{ matrix.job.type }} == '7z' ]]; then
               echo "7z not supported on ${{ matrix.job.os }}";
             elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
-              unzip ${{ env.ZIP_RELEASE_ARCHIVE }};
+              unzip ../${{ env.ZIP_RELEASE_ARCHIVE }};
             else
-              tar -xf ${{ env.ZIP_RELEASE_ARCHIVE }};
+              tar -xf ../${{ env.ZIP_RELEASE_ARCHIVE }};
             fi
           else
             echo "unsupported OS: ${{ matrix.job.cfg }}";
