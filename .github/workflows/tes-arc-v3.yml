@@ -1,0 +1,78 @@
+name: test arc - v3
+on:
+  workflow_dispatch:
+    inputs:
+      volume_size:
+        description: 'volume size'
+        default: 2g
+      DEBUG_MODE:
+        description: DEBUG_MODE
+        default: 'no'
+
+jobs:
+  test_arc:
+    name: test_arc-${{ matrix.job.cfg }}-${{ matrix.job.type }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { cfg: lin, type: '7z'    , os: ubuntu-latest  }
+          - { cfg: win, type: '7z'    , os: windows-latest }
+          - { cfg: mac, type: '7z'    , os: macos-latest   }
+          - { cfg: lin, type: 'zip'   , os: ubuntu-latest  }
+          - { cfg: win, type: 'zip'   , os: windows-latest }
+          - { cfg: mac, type: 'zip'   , os: macos-latest   }
+          - { cfg: lin, type: 'tar.xz', os: ubuntu-latest  }
+          - { cfg: win, type: 'tar.xz', os: windows-latest }
+          - { cfg: mac, type: 'tar.xz', os: macos-latest   }
+    steps:
+      - name: checkout
+        uses: deep-soft/checkout@v4
+
+      - uses: deep-soft/zip-release@v3
+        id: zip_release_action
+        with:
+          type: "${{ matrix.job.type }}"
+          filename: 'tst-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
+          volume_size: ${{ inputs.volume_size }}
+          verbose: ${{ inputs.DEBUG_MODE }}
+          debug: ${{ inputs.DEBUG_MODE }}
+
+      - name: test lin / mac / win
+        shell: bash
+        run: |
+          if [[ ${{ matrix.job.cfg }} == 'win' ]]; then
+            7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
+          elif [[ ${{ matrix.job.cfg }} == 'lin' || ${{ matrix.job.cfg }} == 'mac' ]]; then
+            if [[ ${{ matrix.job.type }} == '7z' ]]; then
+              echo "7z not supported on ${{ matrix.job.os }}";
+            elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
+              unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }};
+            else
+              xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }};
+            fi
+          else
+            echo "unsupported OS: ${{ matrix.job.cfg }}";
+          fi
+          echo "VOLUMES_LIST_NAME=${{ steps.zip_release_action.outputs.VOLUMES_LIST_NAME }}";
+          echo "VOLUMES_NUMBER=${{ steps.zip_release_action.outputs.VOLUMES_NUMBER }}";
+          echo "VOLUMES_FILES=${{ steps.zip_release_action.outputs.VOLUMES_FILES }}";
+
+#      - name: test lin / mac
+#        if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
+#        shell: bash
+#        run: |
+#          if [[ ${{ matrix.job.type }} == '7z' ]]; then
+#            echo "7z not supported on ${{ matrix.job.os }};
+#          elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
+#            unzip -t ${{ env.ZIP_RELEASE_ARCHIVE }};
+#          else
+#            xz -tv ${{ env.ZIP_RELEASE_ARCHIVE }};
+#          fi
+#
+#      - name: test win
+#        if: ${{ matrix.job.cfg == 'win' }}
+#        shell: bash
+#        run: |
+#          7z t ${{ env.ZIP_RELEASE_ARCHIVE }}
