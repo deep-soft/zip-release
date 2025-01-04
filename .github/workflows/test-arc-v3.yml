@@ -59,6 +59,57 @@ jobs:
           echo "VOLUMES_NUMBER=${{ steps.zip_release_action.outputs.VOLUMES_NUMBER }}";
           echo "VOLUMES_FILES=${{ steps.zip_release_action.outputs.VOLUMES_FILES }}";
 
+      - name: test extract lin / mac / win
+        shell: bash
+        run: |
+          mkdir './SignOutput'
+          cd './SignOutput'
+          if [[ ${{ matrix.job.cfg }} == 'win' ]]; then
+            7z x ${{ env.ZIP_RELEASE_ARCHIVE }}
+          elif [[ ${{ matrix.job.cfg }} == 'lin' || ${{ matrix.job.cfg }} == 'mac' ]]; then
+            if [[ ${{ matrix.job.type }} == '7z' ]]; then
+              echo "7z not supported on ${{ matrix.job.os }}";
+            elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
+              unzip ${{ env.ZIP_RELEASE_ARCHIVE }};
+            else
+              tar -xf ${{ env.ZIP_RELEASE_ARCHIVE }};
+            fi
+          else
+            echo "unsupported OS: ${{ matrix.job.cfg }}";
+          fi
+
+      - uses: deep-soft/zip-release@v3
+        id: zip_release_action_2
+        with:
+          type: "${{ matrix.job.type }}"
+          filename: 'tst2-${{ matrix.job.type }}-${{ matrix.job.cfg }}.${{ matrix.job.type }}'
+          volume_size: ${{ inputs.volume_size }}
+          verbose: ${{ inputs.DEBUG_MODE }}
+          debug: ${{ inputs.DEBUG_MODE }}
+          path: '.'
+          directory: './SignOutput'
+          env_variable: ZIP_ARCHIVE
+
+      - name: test 2 lin / mac / win
+        shell: bash
+        run: |
+          if [[ ${{ matrix.job.cfg }} == 'win' ]]; then
+            7z t ${{ env.ZIP_ARCHIVE }}
+          elif [[ ${{ matrix.job.cfg }} == 'lin' || ${{ matrix.job.cfg }} == 'mac' ]]; then
+            if [[ ${{ matrix.job.type }} == '7z' ]]; then
+              echo "7z not supported on ${{ matrix.job.os }}";
+            elif [[ ${{ matrix.job.type }} == 'zip' ]]; then
+              unzip -t ${{ env.ZIP_ARCHIVE }};
+            else
+              xz -tv ${{ env.ZIP_ARCHIVE }};
+            fi
+          else
+            echo "unsupported OS: ${{ matrix.job.cfg }}";
+          fi
+          echo "VOLUMES_LIST_NAME=${{ steps.zip_release_action_2.outputs.VOLUMES_LIST_NAME }}";
+          echo "VOLUMES_NUMBER=${{ steps.zip_release_action_2.outputs.VOLUMES_NUMBER }}";
+          echo "VOLUMES_FILES=${{ steps.zip_release_action_2.outputs.VOLUMES_FILES }}";
+
 #      - name: test lin / mac
 #        if: ${{ matrix.job.cfg == 'lin' || matrix.job.cfg == 'mac' }}
 #        shell: bash
