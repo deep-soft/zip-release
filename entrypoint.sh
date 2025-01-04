@@ -85,6 +85,10 @@ if [[ "$INPUT_TYPE" == "zip" ]] || [[ "$INPUT_TYPE" == "7z" ]]; then
       VOLUMES_NUMBER=$(wc -l < $INPUT_FILENAME.files);
       if [[ "$VOLUMES_NUMBER" == "1" ]]; then
         ARCHIVE_FILENAME=$(head -1 $INPUT_FILENAME.files);
+        if [[ $INPUT_VERBOSE == "yes" ]]; then
+          echo "  INPUT_FILENAME=[$INPUT_FILENAME]";
+          echo "ARCHIVE_FILENAME=[$ARCHIVE_FILENAME]";
+        fi
         if [[ "$ARCHIVE_FILENAME" != "" ]]; then
           mv $ARCHIVE_FILENAME $INPUT_FILENAME || true;
           ARCHIVE_FILENAME=$INPUT_FILENAME;
